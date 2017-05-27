@@ -1,18 +1,21 @@
 package org.atline.jarupdater;
 
+import org.apache.log4j.Logger;
 import org.atline.jarupdater.utils.Finder;
 
 import java.io.*;
 import java.util.Properties;
 
 public class AppMain {
+	static Logger logger = Logger.getLogger(AppMain.class);
+	
     public static void main(String[] args) {
-    	
+    	logger.info("Start update program ...");
         String settings = "";
         if (0 == args.length) {
             String found = Finder.findSettings();
             if ("".equals(found)) {
-                System.out.println("Failure to find settings.conf.");
+                logger.info("Failure to find settings.conf.");
                 System.exit(1);
             } else {
                 settings = found;
@@ -41,16 +44,17 @@ public class AppMain {
                 }
                 
             } else {
-                System.out.println("Wrong updatesite settings.");
+                logger.info("Wrong updatesite settings.");
                 System.exit(1);
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        	logger.error(e,e);
             System.exit(1);
         } catch (IOException e) {
-            e.printStackTrace();
+        	logger.error(e,e);
             System.exit(1);
         }
+        logger.info("End update program.");
         System.exit(0);
     }
 }
