@@ -10,11 +10,14 @@ import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
 public class HttpClientUtil {
+	static Logger logger = Logger.getLogger(HttpClientUtil.class);
+	
     public static boolean downloadBinary(String url, FileOutputStream fos) {
         if ("ok".equals(httpGet(url, fos))) {
             return true;
@@ -40,9 +43,9 @@ public class HttpClientUtil {
                     CookiePolicy.BROWSER_COMPATIBILITY);
             httpGet = new HttpGet(url);
             HttpConnectionParams.setConnectionTimeout(httpclient.getParams(),
-                    30000);
+                    60000);
             HttpConnectionParams.setSoTimeout(httpGet.getParams(),
-                    30000);
+                    60000);
 
             response = httpclient.execute(httpGet);
             int statusCode = response.getStatusLine().getStatusCode();
@@ -67,6 +70,7 @@ public class HttpClientUtil {
                 return result;
             }
         } catch (Exception e) {
+        	logger.error(e);
             return "";
         } finally {
             if (null != httpclient) {
