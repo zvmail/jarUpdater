@@ -60,13 +60,25 @@ public class Updater {
             }
 
             FileOutputStream fos = new FileOutputStream(jarRepoPath + "/" + filename);
+            
             logger.info("Download from "+updateSite+ "/" + jarString);
-            HttpClientUtil.downloadBinary(updateSite + "/" + jarString, fos);
+            
+            boolean ret = HttpClientUtil.downloadBinary(updateSite + "/" + jarString, fos);
+            
+            try {
+				fos.close();
+			} catch (IOException e) {
+				logger.error(e);
+			}
+            
+        	if(ret) {
+            	return true;
+            }
         } catch (FileNotFoundException e) {
             logger.error(e,e);
             return false;
         }
-        return true;
+        return false;
     }
     
     final static String UPDATE = "-UPDATE"; //成功下载，待更新

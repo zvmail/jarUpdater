@@ -43,9 +43,9 @@ public class HttpClientUtil {
                     CookiePolicy.BROWSER_COMPATIBILITY);
             httpGet = new HttpGet(url);
             HttpConnectionParams.setConnectionTimeout(httpclient.getParams(),
-                    60000);
+                    120000);
             HttpConnectionParams.setSoTimeout(httpGet.getParams(),
-                    60000);
+                    120000);
 
             response = httpclient.execute(httpGet);
             int statusCode = response.getStatusLine().getStatusCode();
