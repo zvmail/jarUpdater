@@ -9,8 +9,10 @@ import java.util.Properties;
 public class AppMain {
 	static Logger logger = Logger.getLogger(AppMain.class);
 	
+	static final String VERSION = "V20171025"; 
+	
     public static void main(String[] args) {
-    	logger.info("Start update program ...");
+    	logger.info("Start update program ..." + VERSION);
         String settings = "";
         if (0 == args.length) {
             String found = Finder.findSettings();
@@ -47,10 +49,7 @@ public class AppMain {
                 logger.info("Wrong updatesite settings.");
                 System.exit(1);
             }
-        } catch (FileNotFoundException e) {
-        	logger.error(e,e);
-            System.exit(1);
-        } catch (IOException e) {
+        } catch (Exception e) {
         	logger.error(e,e);
             System.exit(1);
         }
