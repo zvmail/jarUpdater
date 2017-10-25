@@ -63,17 +63,26 @@ public class Updater {
             
             logger.info("Download from "+updateSite+ "/" + jarString);
             
-            boolean ret = HttpClientUtil.downloadBinary(updateSite + "/" + jarString, fos);
-            
             try {
-				fos.close();
-			} catch (IOException e) {
+            
+            	boolean ret = HttpClientUtil.downloadBinary(updateSite + "/" + jarString, fos);
+            
+            	if(ret) {
+                	return true;
+                }
+				
+			} catch (Exception e) {
 				logger.error(e);
+			}finally {
+				if(fos!=null)
+					try {
+						fos.close();
+					} catch (IOException e) {
+						logger.error(e,e);
+					}
 			}
             
-        	if(ret) {
-            	return true;
-            }
+        	
         } catch (FileNotFoundException e) {
             logger.error(e,e);
             return false;
