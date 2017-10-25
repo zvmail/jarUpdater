@@ -203,7 +203,7 @@ public class Updater {
                 return remoteVersion;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+        	logger.error(e,e);
         }
         return "";
     }
@@ -259,7 +259,7 @@ public class Updater {
         try {
         	pLocal.load(new FileInputStream(found));
         }catch(Exception ex){
-        	ex.printStackTrace();
+        	logger.error(ex,ex);
         }
         
     	//得到更新文件列表
@@ -303,25 +303,24 @@ public class Updater {
 			String tmpFileName = PathUtil.getPath()+ "/" + temRepo + "/" + fileName;
 			String newFileName = PathUtil.getPath()+ "/" + jarRepo + "/" +fileName;
 			
-			File uploadFile = new File(newFileName);
-			if(uploadFile.exists()){
-//				//备份文件，暂时未实现				
-//				File bakFile = new File(getBakFileName(newFileName));
-//				try{
-//					bakFile.delete();
-//				}catch(Exception ex){
-//					ex.printStackTrace();
-//				}
-//				
-//				if(!uploadFile.renameTo(bakFile))
-//					return false;
-				
-				if(!uploadFile.delete())
-					return false;
-			}
-
 			try {
-				
+				File uploadFile = new File(newFileName);
+				if(uploadFile.exists()){
+	//				//备份文件，暂时未实现				
+	//				File bakFile = new File(getBakFileName(newFileName));
+	//				try{
+	//					bakFile.delete();
+	//				}catch(Exception ex){
+	//					ex.printStackTrace();
+	//				}
+	//				
+	//				if(!uploadFile.renameTo(bakFile))
+	//					return false;
+					
+					if(!uploadFile.delete())
+						return false;
+				}
+
 				File file = new File(newFileName);  
 				File fileParent = file.getParentFile();  
 				if(!fileParent.exists()){  
@@ -329,10 +328,12 @@ public class Updater {
 				}  
 				
 				Files.copy(Paths.get(tmpFileName), Paths.get(newFileName), REPLACE_EXISTING);
-			} catch (IOException e) {
+				
+			} catch (Exception e) {
 				logger.error(e,e);
 				return false;
 			}
+			
 			logger.info(newFileName + " updated.");
 
     	}
@@ -367,16 +368,14 @@ public class Updater {
 			fis = new FileInputStream(fileName);
 			md5 = DigestUtils.md5Hex(IOUtils.toByteArray(fis));    
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e,e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e,e);
 		}finally{
 			if(fis!=null)IOUtils.closeQuietly(fis);  
 		}
         
-        System.out.println("MD5:"+md5);
+        logger.info("MD5:"+md5);
         return md5;
 	}
 	

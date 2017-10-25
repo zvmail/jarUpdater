@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import org.apache.log4j.Logger;
+
 public class PathUtil {
+	static Logger logger = Logger.getLogger(PathUtil.class);
+	
     private static String path = "";
 
     public static String getPath() {
@@ -28,7 +32,7 @@ public class PathUtil {
             File file = new File(filePath);
             filePath = file.getAbsolutePath();
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        	logger.error(e,e);
             filePath = "";
         }
 

@@ -50,8 +50,8 @@ public class HttpClientUtil {
             response = httpclient.execute(httpGet);
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                System.out.println("Status Code: " + statusCode);
-                System.out.println("Status Reason: " + response.getStatusLine().getReasonPhrase());
+                logger.info("Status Code: " + statusCode);
+                logger.info("Status Reason: " + response.getStatusLine().getReasonPhrase());
                 return "";
             } else {
                 entity = response.getEntity();
